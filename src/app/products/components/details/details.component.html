@@ -1,0 +1,38 @@
+<ng-container *ngIf="product$ | async as product">
+<div class="h-full">
+  <mat-card>
+    <div class="grid justify-items-start items-start">
+      <div class=" flex justify-center" routerLink="/products">
+        <mat-icon>arrow_back</mat-icon>
+        <button color="primary" class="ml-4">
+          Back to products
+        </button>
+      </div>
+
+      <div class="justify-self-end" (click)="onDelete()">
+        <button mat-mini-fab color="primary">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </div>
+    </div>
+    <div
+      class="h-96 flex justify-center"
+    >
+      <img
+        data-test="header-image"
+        class="object-contain w-full"
+        mgsDefaultImage
+        defaultSrc="assets/images/health-partner/default-health-news.jpg"
+        alt=""
+        [src]="product.image"
+      >
+    </div>
+
+    <mat-card-content>
+      <mat-card-title>{{product.title}}</mat-card-title>
+      <mat-card-subtitle>{{product?.price}} €</mat-card-subtitle>
+      <p>{{product.description}}</p>
+    </mat-card-content>
+  </mat-card>
+</div>
+</ng-container>

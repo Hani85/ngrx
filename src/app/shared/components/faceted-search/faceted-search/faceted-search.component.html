@@ -1,0 +1,38 @@
+
+<div *ngIf="filterGroups.length">
+  <mat-card>
+    <span>Filter</span>
+    <span (click)="reset(filterGroups)">Zurücksetzen</span>
+  </mat-card>
+  <mat-divider>
+
+  </mat-divider>
+
+  <!--ngFor FilterGroup of FilterGroups-->
+  <ng-container
+  *ngFor="let filterGroup of filterGroups ">
+  <ng-container
+    *ngIf="(filterGroup.options).length > 1"
+  >
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          {{filterGroup.translationKey}}
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <!--ngFor option of FilterGroup.options-->
+      <div *ngFor="let option of filterGroup.options">
+        <mat-checkbox>
+          [matTooltip]="option value"
+          [matTooltipShowDelay]="1000"
+          matTooltipPostion="above"
+          [(ngModel)]="option.isSet"
+          (change)="emitChange(filterGroups)"
+        </mat-checkbox>
+      </div>
+    </mat-expansion-panel>
+  </ng-container>
+
+</ng-container>
+
+</div>

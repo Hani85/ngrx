@@ -1,0 +1,38 @@
+
+<ng-container *ngIf="{products: productFacade.products$ |async,
+  paginatedProducts: productFacade.paginatedProducts$ |async,
+  pagination: productFacade.pagination$ |async } as sources" >
+
+  <div class="grid grid-cols-3 gap-4">
+    <product-card
+    class="col-span-1"
+    *ngFor="let product of sources.paginatedProducts "
+    [product]="product"
+    >
+    </product-card>
+</div>
+
+<!-- <mat-paginator [length]="productslength"
+           [pageSize]="3"
+           [pageSizeOptions]="[3,6,9]"
+           (page)="onPageChange($event)">
+</mat-paginator> -->
+
+<mat-paginator
+  *ngIf="sources.pagination"
+  [length]="sources.products?.length"
+  [pageIndex]="sources.pagination.pageIndex"
+  [pageSize]="sources.pagination.pageSize"
+  (page)="productFacade.updatePagination($event)">
+</mat-paginator>
+
+<mat-button class="fixed top-16 right-4 mb-4 bg-red-900 text-white h-12 w-36  flex justify-center items-center cursor-pointer rounded-full"
+routerLink="/add-product"
+>
+<mat-icon>add</mat-icon>
+<span>add a Product</span>
+</mat-button>
+
+
+</ng-container>
+

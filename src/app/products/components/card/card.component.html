@@ -1,0 +1,25 @@
+
+<mat-card
+  	class="cursor-pointer  h-full box-border flex flex-col"
+  >
+  <div class="flex justify-center"  [routerLink]="'/details'" (click)="setProduct()">
+    <img class="w-full h-48"  src={{product?.image}} alt="" >
+  </div>
+  <mat-card-content  [routerLink]="'/details'" (click)="setProduct()">
+    <div class="mt-6">
+      <mat-card-title>{{product?.title}}</mat-card-title>
+      <mat-card-subtitle>{{product?.price}} €</mat-card-subtitle>
+    </div>
+    <p>{{(product.description.length>60? (product.description | slice:0:60)+'..':(product.description))}}</p>
+  </mat-card-content>
+  <mat-card-actions class="justify-end" (click)="setProduct()" >
+
+    <button mat-button routerLink="/edit-product" (click)="setProduct()">
+      <mat-icon aria-hidden="false">edit</mat-icon>
+      Edit
+    </button>
+    <button class="text-red-900" mat-button (click)="onDeleteProduct()">
+      <mat-icon aria-hidden="false">delete</mat-icon>
+      Delete</button>
+  </mat-card-actions>
+</mat-card>

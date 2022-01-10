@@ -1,0 +1,21 @@
+<mat-card
+>
+<div [routerLink]="'/posts/postdetail'" (click)="setPost()">
+
+  <mat-card-header>
+    <div mat-card-avatar><img class="rounded-full" src={{post.urlToImage}} alt=""></div>
+    <mat-card-title>{{post.title}}</mat-card-title>
+  </mat-card-header>
+
+  <mat-card-content>
+    <div>
+      <span class="mat-subheading-2 mr-1">{{post.source}}</span>
+      <span class="mat-caption">{{post.publishedAt | date:'dd.MM.yyyy'}}</span>
+    </div>
+    <p>{{post.content}}</p>
+  </mat-card-content>
+
+</div>
+
+
+</mat-card>

@@ -1,0 +1,24 @@
+<ng-container *ngIf="post$ | async as post">
+  <mat-card
+  >
+  <div>
+
+    <mat-card-header>
+      <div>
+        <mat-card-title>{{post.title}}</mat-card-title>
+        <img  class="w-full" src={{post.urlToImage}} alt="">
+      </div>
+
+    </mat-card-header>
+
+    <mat-card-content>
+      <div>
+        <span class="mat-title bg-green-200 rounded-md">{{post.source}}</span>
+        <span class="mat-title bg-red-200 rounded-md">{{post.publishedAt |date:'dd.MM.yyyy'}}</span>
+      </div>
+      <p>{{post.content}}</p>
+    </mat-card-content>
+
+  </div>
+  </mat-card>
+</ng-container>
