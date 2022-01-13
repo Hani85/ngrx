@@ -1,58 +1,68 @@
 
+<ng-container *ngIf="{posts:postsFacade.posts$ | async, filterGroups: postsFacade.filterGroups$ | async} as sources">
+  <div class="grid grid-cols-3">
+    <div class="col-span-1 h-full">
+      <mat-card>
+        <div class="flex justify-start items-center">
+          <span class="mat-title">Filter</span>
+          <button class="bg-gray-100 absolute right-4 rounded-md" (click)="onreset()">Zurücksetzen</button>
+        </div>
 
-<div class="grid grid-cols-3">
-  <div class="col-span-1 h-full">
-    <mat-card>
-      <div class="flex justify-start items-center">
-        <span class="mat-title">Filter</span>
-        <button class="bg-gray-100 absolute right-4 rounded-md" (click)="onreset()">Zurücksetzen</button>
-      </div>
+      </mat-card>
+      <mat-divider></mat-divider>
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Source
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div *ngFor="let item of Sourcecheckbox_list">
 
-    </mat-card>
-    <mat-divider></mat-divider>
-    <mat-expansion-panel>
-      <mat-expansion-panel-header>
-        <mat-panel-title>
-          Source
-        </mat-panel-title>
-      </mat-expansion-panel-header>
-      <div *ngFor="let item of Sourcecheckbox_list">
+          <mat-checkbox
+            [(ngModel)]="item.checked"
+            [disabled]="item.disabled"
+            (change)="change()"
+            >{{ item.name }}</mat-checkbox>
+        </div>
 
-        <mat-checkbox
-          [(ngModel)]="item.checked"
-          [disabled]="item.disabled"
-          (change)="change()"
-          >{{ item.name }}</mat-checkbox>
-      </div>
+      </mat-expansion-panel>
 
-    </mat-expansion-panel>
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Datum
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div *ngFor="let item of PublishedAtcheckbox_list">
 
-    <mat-expansion-panel>
-      <mat-expansion-panel-header>
-        <mat-panel-title>
-          Datum
-        </mat-panel-title>
-      </mat-expansion-panel-header>
-      <div *ngFor="let item of PublishedAtcheckbox_list">
+          <mat-checkbox
+            [(ngModel)]="item.checked"
+            [disabled]="item.disabled"
+            (change)="change()"
+            >{{ item.name }}</mat-checkbox>
+        </div>
 
-        <mat-checkbox
-          [(ngModel)]="item.checked"
-          [disabled]="item.disabled"
-          (change)="change()"
-          >{{ item.name }}</mat-checkbox>
-      </div>
+      </mat-expansion-panel>
 
-    </mat-expansion-panel>
+
+      <app-faceted-search>
+        [filterGroups]="sources.filterGroups"
+        (changes)="postsFacade.setFacetedSearch($event)"
+      </app-faceted-search>
+
+
+    </div>
+    <div class="col-span-2">
+
+      <post-card
+        *ngFor="let post of filteredPosts"
+        [post]="post"
+      >
+      </post-card>
+    </div>
 
   </div>
-  <div class="col-span-2">
-    <post-card
-      *ngFor="let post of filteredPosts"
-      [post]="post"
-    >
-    </post-card>
-  </div>
 
-</div>
+</ng-container>
 
 

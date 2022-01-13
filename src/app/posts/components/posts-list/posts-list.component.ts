@@ -1,8 +1,10 @@
-import { Component, ElementRef, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import {  Store } from '@ngrx/store';
 import { map as _map } from 'lodash/fp';
-import { concat, concatMap, map, mergeMap, Observable, switchMap } from 'rxjs';
+import { concat, concatMap, map, mergeMap, Observable, Subject, switchMap, take, takeLast, takeUntil, tap } from 'rxjs';
+import { FilterGroup } from 'src/app/shared/models/filter-group.interface';
+import { setFacetedSearchAction } from 'src/app/shared/store/faceted-search/faceted-search.actions';
 import { AppState } from 'src/app/store/app.state';
 import { PostsFacade } from '../../application/posts.facade';
 import { loadPosts } from '../../store/post.actions';
@@ -28,7 +30,10 @@ export class CheckboxList {
   templateUrl: './posts-list.component.html',
   styleUrls: ['./posts-list.component.scss']
 })
-export class PostsListComponent implements OnInit {
+export class PostsListComponent implements OnInit,OnDestroy {
+
+  destroy$= new Subject();
+
   sourceFilterOptions$= this.store.select(selectSourceFilterOptions);
   publishedAtFilterOptions$= this.store.select(selectPublishedAtFilterOptions);
   posts!: Post[];
@@ -38,11 +43,19 @@ export class PostsListComponent implements OnInit {
   Sourcecheckbox_list:CheckboxList[] =[];
   PublishedAtcheckbox_list:CheckboxList[] =[];
 
-  constructor(private store: Store<AppState>,  readonly postsFacade:PostsFacade) {
+  constructor(private store: Store<AppState>, readonly postsFacade:PostsFacade) {
 
+
+   }
+   ngOnDestroy(): void {
+       this.destroy$.next(undefined);
+       this.destroy$.complete();
    }
 
   ngOnInit(): void {
+
+
+
 
     this.store.select(selectPosts)
     .subscribe(
@@ -56,6 +69,14 @@ export class PostsListComponent implements OnInit {
 
 
     );
+
+
+    this.postsFacade.filterGroups$.pipe(
+      takeUntil(this.destroy$),
+      tap((filterGroups) => {
+        this.postsFacade.setFacetedSearch(filterGroups);
+      }),
+    ).subscribe();
 
     this.sourceFilterOptions$.subscribe(
       (options) => {
@@ -83,14 +104,14 @@ export class PostsListComponent implements OnInit {
     );
 
 
+
   }
 
   change() {
 
     this.checkeSourcesdOps= _map("name")(this.Sourcecheckbox_list.filter((op)=>op.checked==true))
     this.checkedpublishedAtOps= _map("name")(this.PublishedAtcheckbox_list.filter((op)=>op.checked==true))
-    console.log(this.checkeSourcesdOps)
-    console.log(this.checkedpublishedAtOps)
+
     if(this.checkeSourcesdOps.length===0 && this.checkedpublishedAtOps.length===0){
       this.filteredPosts= this.posts;
     }

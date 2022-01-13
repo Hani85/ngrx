@@ -6,11 +6,13 @@ import {
   map as _map,
   isUndefined as _isUndefined
 } from 'lodash'
+import { props } from 'lodash/fp';
+import { selectAll } from 'src/app/posts/store/post.reducer';
 import { FilterGroup } from "../../models/filter-group.interface";
 import { FacetedSearch, facetedSearchKey } from './faceted-search.model';
 import { selectEntities } from './faceted-search.reducer';
 
-const getActiveFacetedSearchFilterGroups = (
+export const getActiveFacetedSearchFilterGroups = (
   filterGroups: FilterGroup[],
 ): FilterGroup[] => {
   const filterGroupsWithActiveFilters: FilterGroup[] = _filter(
@@ -18,8 +20,12 @@ const getActiveFacetedSearchFilterGroups = (
     ({ options }) => !_isEmpty(_filter(options, ({ isSet }) => isSet)),
   );
 
-    return filterGroupsWithActiveFilters;
-
+    //return filterGroupsWithActiveFilters;
+    return _map(filterGroupsWithActiveFilters, ({options, ...props}) =>({
+      ...props,
+      options: _filter(options,  ({ isSet }) => isSet),
+      })
+    ) as any;
 
 };
 
@@ -31,6 +37,9 @@ export const selectFacetedSearchEntities = createSelector(
   selectFacetedSearchFeature,
   selectEntities,
 );
+
+
+
 
 export const selectFacetedSearch: (
   featureName: string,
@@ -65,4 +74,5 @@ export const selectActiveFacetedSearchFilterGroups: (
         ? undefined
         : getActiveFacetedSearchFilterGroups(filterGroups),
   );
+
 

@@ -1,5 +1,5 @@
 
-<div *ngIf="filterGroups.length">
+<!-- <div *ngIf="filterGroups.length"> -->
   <mat-card>
     <span>Filter</span>
     <span (click)="reset(filterGroups)">Zurücksetzen</span>
@@ -17,17 +17,15 @@
     <mat-expansion-panel>
       <mat-expansion-panel-header>
         <mat-panel-title>
-          {{filterGroup.translationKey}}
+          {{filterGroup.name}}
         </mat-panel-title>
       </mat-expansion-panel-header>
       <!--ngFor option of FilterGroup.options-->
       <div *ngFor="let option of filterGroup.options">
-        <mat-checkbox>
-          [matTooltip]="option value"
-          [matTooltipShowDelay]="1000"
-          matTooltipPostion="above"
+        <mat-checkbox
           [(ngModel)]="option.isSet"
-          (change)="emitChange(filterGroups)"
+          (change)="emitChange(filterGroups)">
+        {{option.value}}
         </mat-checkbox>
       </div>
     </mat-expansion-panel>
@@ -35,4 +33,4 @@
 
 </ng-container>
 
-</div>
+<!-- </div> -->

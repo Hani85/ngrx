@@ -15,8 +15,9 @@ import * as fromFacetedSearch from './faceted-search/faceted-search.reducer';
   imports: [
     CommonModule,
     StoreModule.forFeature(paginationsFeatureKey, fromPagination.paginationReducer),
+    StoreModule.forFeature(fromFacetedSearch.facetedSearchesFeatureKey, fromFacetedSearch.facetedSearchReducer),
     EffectsModule.forFeature([PaginationEffects]),
-    StoreModule.forFeature(fromFacetedSearch.facetedSearchesFeatureKey, fromFacetedSearch.facetedSearchReducer)
+
   ],
   providers:[
     {
